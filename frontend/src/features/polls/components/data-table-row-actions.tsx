@@ -6,18 +6,13 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { useTasks } from '../context/tasks-context'
-import { labels } from '../data/data'
 import { taskSchema } from '../data/schema'
+import { Edit, Play } from 'lucide-react'
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>
@@ -43,30 +38,30 @@ export function DataTableRowActions<TData>({
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end' className='w-[160px]'>
         <DropdownMenuItem
+          className='cursor-pointer'
           onClick={() => {
             setCurrentRow(task)
             setOpen('update')
           }}
         >
+          <Play className='text-green-500' />
+          Start Poll
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+
+        <DropdownMenuItem
+          className='cursor-pointer'
+          onClick={() => {
+            setCurrentRow(task)
+            setOpen('update')
+          }}
+        >
+          <Edit className=' text-blue-500' />
           Edit
         </DropdownMenuItem>
-        <DropdownMenuItem disabled>Make a copy</DropdownMenuItem>
-        <DropdownMenuItem disabled>Favorite</DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuSub>
-          <DropdownMenuSubTrigger>Labels</DropdownMenuSubTrigger>
-          <DropdownMenuSubContent>
-            <DropdownMenuRadioGroup value={task.label}>
-              {labels.map((label) => (
-                <DropdownMenuRadioItem key={label.value} value={label.value}>
-                  {label.label}
-                </DropdownMenuRadioItem>
-              ))}
-            </DropdownMenuRadioGroup>
-          </DropdownMenuSubContent>
-        </DropdownMenuSub>
         <DropdownMenuSeparator />
         <DropdownMenuItem
+          className='cursor-pointer'
           onClick={() => {
             setCurrentRow(task)
             setOpen('delete')
@@ -74,7 +69,7 @@ export function DataTableRowActions<TData>({
         >
           Delete
           <DropdownMenuShortcut>
-            <IconTrash size={16} />
+            <IconTrash size={16} className='text-red-600' />
           </DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>

@@ -1,8 +1,5 @@
 import { Header } from '@/components/layout/header'
 import { Main } from '@/components/layout/main'
-import { ProfileDropdown } from '@/components/profile-dropdown'
-import { Search } from '@/components/search'
-import { ThemeSwitch } from '@/components/theme-switch'
 import { columns } from './components/columns'
 import { DataTable } from './components/data-table'
 import { TasksDialogs } from './components/tasks-dialogs'
@@ -21,7 +18,7 @@ export default function Polls() {
           <div>
             <h2 className='text-2xl font-bold tracking-tight'>Polls</h2>
             <p className='text-muted-foreground'>
-              Manage your polls and their settings here.
+              Create and manage your polls here.
             </p>
           </div>
           <TasksPrimaryButtons />

@@ -24,6 +24,7 @@ import {
 } from '@/components/ui/sheet'
 import { SelectDropdown } from '@/components/select-dropdown'
 import { Task } from '../data/schema'
+import { Textarea } from '@/components/ui/textarea'
 
 interface Props {
   open: boolean
@@ -76,11 +77,11 @@ export function TasksMutateDrawer({ open, onOpenChange, currentRow }: Props) {
     >
       <SheetContent className='flex flex-col'>
         <SheetHeader className='text-left'>
-          <SheetTitle>{isUpdate ? 'Update' : 'Create'} Task</SheetTitle>
+          <SheetTitle>{isUpdate ? 'Update' : 'Create'} Poll</SheetTitle>
           <SheetDescription>
             {isUpdate
-              ? 'Update the task by providing necessary info.'
-              : 'Add a new task by providing necessary info.'}
+              ? 'Update the poll by providing necessary info.'
+              : 'Add a new poll by providing necessary info.'}
             Click save when you&apos;re done.
           </SheetDescription>
         </SheetHeader>
@@ -97,67 +98,7 @@ export function TasksMutateDrawer({ open, onOpenChange, currentRow }: Props) {
                 <FormItem className='space-y-1'>
                   <FormLabel>Title</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder='Enter a title' />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='status'
-              render={({ field }) => (
-                <FormItem className='space-y-1'>
-                  <FormLabel>Status</FormLabel>
-                  <SelectDropdown
-                    defaultValue={field.value}
-                    onValueChange={field.onChange}
-                    placeholder='Select dropdown'
-                    items={[
-                      { label: 'In Progress', value: 'in progress' },
-                      { label: 'Backlog', value: 'backlog' },
-                      { label: 'Todo', value: 'todo' },
-                      { label: 'Canceled', value: 'canceled' },
-                      { label: 'Done', value: 'done' },
-                    ]}
-                  />
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='label'
-              render={({ field }) => (
-                <FormItem className='relative space-y-3'>
-                  <FormLabel>Label</FormLabel>
-                  <FormControl>
-                    <RadioGroup
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      className='flex flex-col space-y-1'
-                    >
-                      <FormItem className='flex items-center space-x-3 space-y-0'>
-                        <FormControl>
-                          <RadioGroupItem value='documentation' />
-                        </FormControl>
-                        <FormLabel className='font-normal'>
-                          Documentation
-                        </FormLabel>
-                      </FormItem>
-                      <FormItem className='flex items-center space-x-3 space-y-0'>
-                        <FormControl>
-                          <RadioGroupItem value='feature' />
-                        </FormControl>
-                        <FormLabel className='font-normal'>Feature</FormLabel>
-                      </FormItem>
-                      <FormItem className='flex items-center space-x-3 space-y-0'>
-                        <FormControl>
-                          <RadioGroupItem value='bug' />
-                        </FormControl>
-                        <FormLabel className='font-normal'>Bug</FormLabel>
-                      </FormItem>
-                    </RadioGroup>
+                    <Textarea {...field} placeholder='Enter a title' />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
