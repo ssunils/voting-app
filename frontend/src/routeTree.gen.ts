@@ -21,6 +21,7 @@ import { Route as auth500Import } from './routes/(auth)/500'
 
 // Create Virtual Routes
 
+const VoteIndexLazyImport = createFileRoute('/vote/')()
 const errors503LazyImport = createFileRoute('/(errors)/503')()
 const errors500LazyImport = createFileRoute('/(errors)/500')()
 const errors404LazyImport = createFileRoute('/(errors)/404')()
@@ -71,6 +72,12 @@ const AuthenticatedRouteRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRoute,
 } as any)
+
+const VoteIndexLazyRoute = VoteIndexLazyImport.update({
+  id: '/vote/',
+  path: '/vote/',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/vote/index.lazy').then((d) => d.Route))
 
 const AuthenticatedIndexRoute = AuthenticatedIndexImport.update({
   id: '/',
@@ -374,6 +381,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedIndexImport
       parentRoute: typeof AuthenticatedRouteImport
     }
+    '/vote/': {
+      id: '/vote/'
+      path: '/vote'
+      fullPath: '/vote'
+      preLoaderRoute: typeof VoteIndexLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/_authenticated/settings/account': {
       id: '/_authenticated/settings/account'
       path: '/account'
@@ -513,6 +527,7 @@ export interface FileRoutesByFullPath {
   '/404': typeof errors404LazyRoute
   '/503': typeof errors503LazyRoute
   '/': typeof AuthenticatedIndexRoute
+  '/vote': typeof VoteIndexLazyRoute
   '/settings/account': typeof AuthenticatedSettingsAccountLazyRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceLazyRoute
   '/settings/display': typeof AuthenticatedSettingsDisplayLazyRoute
@@ -537,6 +552,7 @@ export interface FileRoutesByTo {
   '/404': typeof errors404LazyRoute
   '/503': typeof errors503LazyRoute
   '/': typeof AuthenticatedIndexRoute
+  '/vote': typeof VoteIndexLazyRoute
   '/settings/account': typeof AuthenticatedSettingsAccountLazyRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceLazyRoute
   '/settings/display': typeof AuthenticatedSettingsDisplayLazyRoute
@@ -565,6 +581,7 @@ export interface FileRoutesById {
   '/(errors)/500': typeof errors500LazyRoute
   '/(errors)/503': typeof errors503LazyRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/vote/': typeof VoteIndexLazyRoute
   '/_authenticated/settings/account': typeof AuthenticatedSettingsAccountLazyRoute
   '/_authenticated/settings/appearance': typeof AuthenticatedSettingsAppearanceLazyRoute
   '/_authenticated/settings/display': typeof AuthenticatedSettingsDisplayLazyRoute
@@ -593,6 +610,7 @@ export interface FileRouteTypes {
     | '/404'
     | '/503'
     | '/'
+    | '/vote'
     | '/settings/account'
     | '/settings/appearance'
     | '/settings/display'
@@ -616,6 +634,7 @@ export interface FileRouteTypes {
     | '/404'
     | '/503'
     | '/'
+    | '/vote'
     | '/settings/account'
     | '/settings/appearance'
     | '/settings/display'
@@ -642,6 +661,7 @@ export interface FileRouteTypes {
     | '/(errors)/500'
     | '/(errors)/503'
     | '/_authenticated/'
+    | '/vote/'
     | '/_authenticated/settings/account'
     | '/_authenticated/settings/appearance'
     | '/_authenticated/settings/display'
@@ -668,6 +688,7 @@ export interface RootRouteChildren {
   errors404LazyRoute: typeof errors404LazyRoute
   errors500LazyRoute: typeof errors500LazyRoute
   errors503LazyRoute: typeof errors503LazyRoute
+  VoteIndexLazyRoute: typeof VoteIndexLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -683,6 +704,7 @@ const rootRouteChildren: RootRouteChildren = {
   errors404LazyRoute: errors404LazyRoute,
   errors500LazyRoute: errors500LazyRoute,
   errors503LazyRoute: errors503LazyRoute,
+  VoteIndexLazyRoute: VoteIndexLazyRoute,
 }
 
 export const routeTree = rootRoute
@@ -706,7 +728,8 @@ export const routeTree = rootRoute
         "/(errors)/403",
         "/(errors)/404",
         "/(errors)/500",
-        "/(errors)/503"
+        "/(errors)/503",
+        "/vote/"
       ]
     },
     "/_authenticated": {
@@ -768,6 +791,9 @@ export const routeTree = rootRoute
     "/_authenticated/": {
       "filePath": "_authenticated/index.tsx",
       "parent": "/_authenticated"
+    },
+    "/vote/": {
+      "filePath": "vote/index.lazy.tsx"
     },
     "/_authenticated/settings/account": {
       "filePath": "_authenticated/settings/account.lazy.tsx",
