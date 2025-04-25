@@ -1,50 +1,58 @@
 <?php
-// Include database connection=
-
-// Set response headers
 header("Content-Type: application/json; charset=UTF-8");
 
-// Check if the request method is POST
+// Ensure the request is POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     echo json_encode(["message" => "Method not allowed."]);
     exit;
 }
 
-// Get the input data
+require_once '../db.php';
+require_once '../auth_admin.php';
+
+// Get and decode input JSON
 $data = json_decode(file_get_contents("php://input"), true);
 
-// Validate input
-if (!isset($data['title']) || !isset($data['options']) || !is_array($data['options']) || count($data['options']) < 2) {
+// Validate required fields
+if (
+    !isset($data['title']) ||
+    !isset($data['description']) ||
+    strlen(trim($data['title'])) < 1 ||
+    strlen(trim($data['description'])) < 1
+) {
     http_response_code(400);
-    echo json_encode(["message" => "Invalid input. 'title' and at least two 'options' are required."]);
+    echo json_encode(["message" => "Invalid input. 'title' and 'description' are required."]);
     exit;
 }
 
+// Sanitize inputs
 $title = htmlspecialchars(strip_tags($data['title']));
-$options = array_map('htmlspecialchars', array_map('strip_tags', $data['options']));
+$description = htmlspecialchars(strip_tags($data['description']));
+
+// User ID from session
+$user_id = $_SESSION['user_id'];
+
 
 try {
     // Insert poll into the database
-    $query = "INSERT INTO polls (title) VALUES (:title)";
+    $query = "
+        INSERT INTO polls (created_by, updated_by, title, description, poll_options)
+        VALUES (:created_by, :updated_by, :title, :description, 'Yes,No') 
+    ";
+    // Hard coding the YES, No value so that we can add more options later
+
     $stmt = $pdo->prepare($query);
-    $stmt->bindParam(':title', $title);
-    $stmt->execute();
-    $pollId = $pdo->lastInsertId();
+    $stmt->execute([
+        ':created_by' => $user_id,
+        ':updated_by' => $user_id,
+        ':title' => $title,
+        ':description' => $description,
+    ]);
 
-    // Insert poll options into the database
-    $query = "INSERT INTO poll_options (poll_id, option_text) VALUES (:poll_id, :option_text)";
-    $stmt = $pdo->prepare($query);
-
-    foreach ($options as $option) {
-        $stmt->bindParam(':poll_id', $pollId);
-        $stmt->bindParam(':option_text', $option);
-        $stmt->execute();
-    }
-
-    // Respond with success
+    // Return success response
     http_response_code(201);
-    echo json_encode(["message" => "Poll created successfully.", "poll_id" => $pollId]);
+    echo json_encode(["message" => "Poll created successfully.", "poll_id" => $pdo->lastInsertId()]);
 } catch (Exception $e) {
     http_response_code(500);
     echo json_encode(["message" => "An error occurred while creating the poll.", "error" => $e->getMessage()]);
