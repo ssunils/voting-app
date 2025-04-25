@@ -1,81 +1,75 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import {  CheckIcon, X } from 'lucide-react'
 
 export function RecentSales() {
   return (
-    <div className='space-y-8'>
+    <div className='space-y-2'>
       <div className='flex items-center gap-4'>
-        <Avatar className='h-9 w-9'>
-          <AvatarImage src='/avatars/01.png' alt='Avatar' />
-          <AvatarFallback>OM</AvatarFallback>
-        </Avatar>
+        <div className='h-9 w-9'>
+          <X className=' text-red-500' />
+        </div>
         <div className='flex flex-1 flex-wrap items-center justify-between'>
           <div className='space-y-1'>
             <p className='text-sm font-medium leading-none'>Olivia Martin</p>
             <p className='text-sm text-muted-foreground'>
-              olivia.martin@email.com
+              Do you approve the minutes of the previous AGM?
             </p>
+            <small className='text-gray-400'>2025, 12 June 10:22:34</small>
           </div>
-          <div className='font-medium'>+$1,999.00</div>
         </div>
       </div>
-      <div className='flex items-center gap-4'>
-        <Avatar className='flex h-9 w-9 items-center justify-center space-y-0 border'>
-          <AvatarImage src='/avatars/02.png' alt='Avatar' />
-          <AvatarFallback>JL</AvatarFallback>
-        </Avatar>
+      <div className='flex items-center gap-4 border-t border-t-slate-200 pt-4'>
+        <div className='h-9 w-9'>
+          <X className=' text-red-500' />
+        </div>
         <div className='flex flex-1 flex-wrap items-center justify-between'>
           <div className='space-y-1'>
             <p className='text-sm font-medium leading-none'>Jackson Lee</p>
             <p className='text-sm text-muted-foreground'>
-              jackson.lee@email.com
+              Do you accept the church's annual financial report for the year?
             </p>
+            <small className='text-gray-400'>2025, 12 June 10:22:12</small>
           </div>
-          <div className='font-medium'>+$39.00</div>
         </div>
       </div>
-      <div className='flex items-center gap-4'>
-        <Avatar className='h-9 w-9'>
-          <AvatarImage src='/avatars/03.png' alt='Avatar' />
-          <AvatarFallback>IN</AvatarFallback>
-        </Avatar>
+      <div className='flex items-center gap-4 border-t border-t-slate-200 pt-4'>
+        <div className='h-9 w-9'>
+          <X className=' text-red-500' />
+        </div>
         <div className='flex flex-1 flex-wrap items-center justify-between'>
           <div className='space-y-1'>
             <p className='text-sm font-medium leading-none'>Isabella Nguyen</p>
             <p className='text-sm text-muted-foreground'>
-              isabella.nguyen@email.com
+              Do you accept the church’s primary focus for the upcoming year?
             </p>
+            <small className='text-gray-400'>2025, 12 June 10:21:02</small>
           </div>
-          <div className='font-medium'>+$299.00</div>
         </div>
       </div>
 
-      <div className='flex items-center gap-4'>
-        <Avatar className='h-9 w-9'>
-          <AvatarImage src='/avatars/04.png' alt='Avatar' />
-          <AvatarFallback>WK</AvatarFallback>
-        </Avatar>
+      <div className='flex items-center gap-4 border-t border-t-slate-200 pt-4'>
+        <div className='h-9 w-9'>
+          <X className=' text-red-500' />
+        </div>
         <div className='flex flex-1 flex-wrap items-center justify-between'>
           <div className='space-y-1'>
             <p className='text-sm font-medium leading-none'>William Kim</p>
-            <p className='text-sm text-muted-foreground'>will@email.com</p>
+            <p className='text-sm text-muted-foreground'>Do you accept the annual financial report for the year?</p>
+            <small className='text-gray-400'>2025, 12 June 10:20:22</small>
           </div>
-          <div className='font-medium'>+$99.00</div>
         </div>
       </div>
-
-      <div className='flex items-center gap-4'>
-        <Avatar className='h-9 w-9'>
-          <AvatarImage src='/avatars/05.png' alt='Avatar' />
-          <AvatarFallback>SD</AvatarFallback>
-        </Avatar>
+      <div className='flex items-center gap-4 border-t border-t-slate-200 pt-4'>
+        <div className='h-9 w-9'>
+          <CheckIcon className=' text-green-500' />
+        </div>
         <div className='flex flex-1 flex-wrap items-center justify-between'>
           <div className='space-y-1'>
             <p className='text-sm font-medium leading-none'>Sofia Davis</p>
             <p className='text-sm text-muted-foreground'>
-              sofia.davis@email.com
+              Do you accept the church's annual financial report for the year?
             </p>
+            <small className='text-gray-400'>2025, 12 June 10:20:21</small>
           </div>
-          <div className='font-medium'>+$39.00</div>
         </div>
       </div>
     </div>

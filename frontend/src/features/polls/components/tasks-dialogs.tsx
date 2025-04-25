@@ -16,7 +16,7 @@ export function TasksDialogs() {
       {currentRow && (
         <>
           <TasksMutateDrawer
-            key={`task-update-${currentRow.id}`}
+            key={`task-update`}
             open={open === 'update'}
             onOpenChange={() => {
               setOpen('update')
@@ -54,11 +54,11 @@ export function TasksDialogs() {
               })
             }}
             className='max-w-md'
-            title={`Delete this task: ${currentRow.id} ?`}
+            title={`Delete this task:  ?`}
             desc={
               <>
                 You are about to delete a task with the ID{' '}
-                <strong>{currentRow.id}</strong>. <br />
+                <strong>c..</strong>. <br />
                 This action cannot be undone.
               </>
             }

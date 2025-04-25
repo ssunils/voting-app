@@ -14,7 +14,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible='icon' variant='floating' {...props}>
       <SidebarHeader className='px-4'>
-        <span className='bold'>Poll Manager</span>
+        <strong className='bold'>Poll Manager</strong>
       </SidebarHeader>
       <SidebarContent>
         {sidebarData.navGroups.map((props) => (

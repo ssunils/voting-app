@@ -6,7 +6,8 @@ export const taskSchema = z.object({
   subject: z.string(),
   status: z.string(),
   label: z.string(),
-  priority: z.string(),
+  vote_ratio: z.string(),
+  result: z.string(),
 })
 
 export type Task = z.infer<typeof taskSchema>

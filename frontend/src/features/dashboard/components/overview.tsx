@@ -2,58 +2,47 @@ import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts'
 
 const data = [
   {
-    name: 'Jan',
-    total: Math.floor(Math.random() * 5000) + 1000,
+    name: '1',
+    yes: Math.floor(Math.random() * 500) + 600,
+    no: Math.floor(Math.random() * 500) + 600,
   },
   {
-    name: 'Feb',
-    total: Math.floor(Math.random() * 5000) + 1000,
+    name: '2',
+    yes: Math.floor(Math.random() * 500) + 600,
+    no: Math.floor(Math.random() * 500) + 600,
   },
   {
-    name: 'Mar',
-    total: Math.floor(Math.random() * 5000) + 1000,
+    name: '3',
+    yes: Math.floor(Math.random() * 500) + 600,
+    no: Math.floor(Math.random() * 500) + 600,
   },
   {
-    name: 'Apr',
-    total: Math.floor(Math.random() * 5000) + 1000,
+    name: '4',
+    yes: Math.floor(Math.random() * 500) + 600,
+    no: Math.floor(Math.random() * 500) + 600,
   },
   {
-    name: 'May',
-    total: Math.floor(Math.random() * 5000) + 1000,
+    name: '5',
+    yes: Math.floor(Math.random() * 500) + 600,
+    no: Math.floor(Math.random() * 500) + 600,
   },
+
   {
-    name: 'Jun',
-    total: Math.floor(Math.random() * 5000) + 1000,
+    name: '6',
+    yes: 0,
+    no: 0,
   },
+
   {
-    name: 'Jul',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Aug',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Sep',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Oct',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Nov',
-    total: Math.floor(Math.random() * 5000) + 1000,
-  },
-  {
-    name: 'Dec',
-    total: Math.floor(Math.random() * 5000) + 1000,
+    name: '7',
+    yes: 0,
+    no: 0,
   },
 ]
 
 export function Overview() {
   return (
-    <ResponsiveContainer width='100%' height={350}>
+    <ResponsiveContainer width='100%' height={480}>
       <BarChart data={data}>
         <XAxis
           dataKey='name'
@@ -67,13 +56,20 @@ export function Overview() {
           fontSize={12}
           tickLine={false}
           axisLine={false}
-          tickFormatter={(value) => `$${value}`}
+          tickFormatter={(value) => `${value}`}
         />
         <Bar
-          dataKey='total'
+          dataKey='yes'
           fill='currentColor'
           radius={[4, 4, 0, 0]}
-          className='fill-primary'
+          className='fill-green-300'
+        />
+
+        <Bar
+          dataKey='no'
+          fill='#ff0'
+          radius={[4, 4, 0, 0]}
+          className='fill-gray-500'
         />
       </BarChart>
     </ResponsiveContainer>
