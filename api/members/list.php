@@ -1,12 +1,13 @@
 <?php
 header('Content-Type: application/json');
 
+require_once '../cors.php';
 require_once '../db.php';      // DB connection
 require_once '../auth_admin.php';    // Auth check
 
 try {
     // Query to fetch members list
-    $stmt = $pdo->query("SELECT id, name, email FROM members");
+    $stmt = $pdo->query("SELECT * FROM members");
     $members = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     echo json_encode([

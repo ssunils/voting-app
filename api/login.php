@@ -15,7 +15,7 @@ if (!$username || !$password) {
 
 function tryLogin($pdo, $table, $role, $username, $password)
 {
-    $stmt = $pdo->prepare("SELECT id, password, name FROM $table WHERE username = :username");
+    $stmt = $pdo->prepare("SELECT * FROM $table WHERE username = :username");
     $stmt->execute([':username' => $username]);
     $user = $stmt->fetch();
 
@@ -23,6 +23,13 @@ function tryLogin($pdo, $table, $role, $username, $password)
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['role'] = $role;
         $_SESSION['name'] = $user['name'];
+
+        // Set is_online = 1
+        if($role == 'member') {
+            $_SESSION['member_id'] = $user['member_id'];
+            $updateOnline = $pdo->prepare("UPDATE $table SET is_online = 1 WHERE id = :id");
+            $updateOnline->execute([':id' => $user['id']]);
+        }
         return true;
     }
 
@@ -45,3 +52,4 @@ if (
     http_response_code(401);
     echo json_encode(['success' => false, 'message' => 'Invalid credentials']);
 }
+?>

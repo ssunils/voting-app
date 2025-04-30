@@ -1,5 +1,6 @@
 <?php
 header("Content-Type: application/json; charset=UTF-8");
+require_once '../cors.php'; // CORS headers
 
 require_once '../db.php';
 require_once '../auth_admin.php'; // checks if user is logged in

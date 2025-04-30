@@ -1,5 +1,6 @@
 <?php
 header("Content-Type: application/json; charset=UTF-8");
+require_once '../cors.php';
 
 // Ensure the request is POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -7,7 +8,6 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(["message" => "Method not allowed."]);
     exit;
 }
-
 require_once '../db.php';
 require_once '../auth_admin.php';
 

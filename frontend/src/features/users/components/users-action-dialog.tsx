@@ -52,10 +52,10 @@ const formSchema = z
         })
       }
 
-      if (password.length < 8) {
+      if (password.length < 4) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          message: 'Password must be at least 8 characters long.',
+          message: 'Password must be at least 4 characters long.',
           path: ['password'],
         })
       }
@@ -64,14 +64,6 @@ const formSchema = z
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: 'Password must contain at least one lowercase letter.',
-          path: ['password'],
-        })
-      }
-
-      if (!password.match(/\d/)) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: 'Password must contain at least one number.',
           path: ['password'],
         })
       }
@@ -161,7 +153,7 @@ export function UsersActionDialog({ currentRow, open, onOpenChange }: Props) {
                 render={({ field }) => (
                   <FormItem className='grid grid-cols-6 items-center gap-x-4 gap-y-1 space-y-0'>
                     <FormLabel className='col-span-2 text-right'>
-                      First Name
+                       Name
                     </FormLabel>
                     <FormControl>
                       <Input

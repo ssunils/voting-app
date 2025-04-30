@@ -14,12 +14,12 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated/route'
+import { Route as VoteIndexImport } from './routes/vote/index'
 import { Route as AuthenticatedIndexImport } from './routes/_authenticated/index'
 import { Route as authSignInImport } from './routes/(auth)/sign-in'
 
 // Create Virtual Routes
 
-const VoteIndexLazyImport = createFileRoute('/vote/')()
 const errors503LazyImport = createFileRoute('/(errors)/503')()
 const errors500LazyImport = createFileRoute('/(errors)/500')()
 const errors404LazyImport = createFileRoute('/(errors)/404')()
@@ -39,11 +39,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const VoteIndexLazyRoute = VoteIndexLazyImport.update({
+const VoteIndexRoute = VoteIndexImport.update({
   id: '/vote/',
   path: '/vote/',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/vote/index.lazy').then((d) => d.Route))
+} as any)
 
 const AuthenticatedIndexRoute = AuthenticatedIndexImport.update({
   id: '/',
@@ -179,7 +179,7 @@ declare module '@tanstack/react-router' {
       id: '/vote/'
       path: '/vote'
       fullPath: '/vote'
-      preLoaderRoute: typeof VoteIndexLazyImport
+      preLoaderRoute: typeof VoteIndexImport
       parentRoute: typeof rootRoute
     }
     '/_authenticated/polls/': {
@@ -225,7 +225,7 @@ export interface FileRoutesByFullPath {
   '/500': typeof errors500LazyRoute
   '/503': typeof errors503LazyRoute
   '/': typeof AuthenticatedIndexRoute
-  '/vote': typeof VoteIndexLazyRoute
+  '/vote': typeof VoteIndexRoute
   '/polls': typeof AuthenticatedPollsIndexLazyRoute
   '/users': typeof AuthenticatedUsersIndexLazyRoute
 }
@@ -238,7 +238,7 @@ export interface FileRoutesByTo {
   '/500': typeof errors500LazyRoute
   '/503': typeof errors503LazyRoute
   '/': typeof AuthenticatedIndexRoute
-  '/vote': typeof VoteIndexLazyRoute
+  '/vote': typeof VoteIndexRoute
   '/polls': typeof AuthenticatedPollsIndexLazyRoute
   '/users': typeof AuthenticatedUsersIndexLazyRoute
 }
@@ -253,7 +253,7 @@ export interface FileRoutesById {
   '/(errors)/500': typeof errors500LazyRoute
   '/(errors)/503': typeof errors503LazyRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
-  '/vote/': typeof VoteIndexLazyRoute
+  '/vote/': typeof VoteIndexRoute
   '/_authenticated/polls/': typeof AuthenticatedPollsIndexLazyRoute
   '/_authenticated/users/': typeof AuthenticatedUsersIndexLazyRoute
 }
@@ -308,7 +308,7 @@ export interface RootRouteChildren {
   errors404LazyRoute: typeof errors404LazyRoute
   errors500LazyRoute: typeof errors500LazyRoute
   errors503LazyRoute: typeof errors503LazyRoute
-  VoteIndexLazyRoute: typeof VoteIndexLazyRoute
+  VoteIndexRoute: typeof VoteIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -319,7 +319,7 @@ const rootRouteChildren: RootRouteChildren = {
   errors404LazyRoute: errors404LazyRoute,
   errors500LazyRoute: errors500LazyRoute,
   errors503LazyRoute: errors503LazyRoute,
-  VoteIndexLazyRoute: VoteIndexLazyRoute,
+  VoteIndexRoute: VoteIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -373,7 +373,7 @@ export const routeTree = rootRoute
       "parent": "/_authenticated"
     },
     "/vote/": {
-      "filePath": "vote/index.lazy.tsx"
+      "filePath": "vote/index.tsx"
     },
     "/_authenticated/polls/": {
       "filePath": "_authenticated/polls/index.lazy.tsx",

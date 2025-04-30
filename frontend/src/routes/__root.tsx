@@ -1,5 +1,5 @@
 import { QueryClient } from '@tanstack/react-query'
-import { createRootRouteWithContext, Outlet, redirect } from '@tanstack/react-router'
+import { createRootRouteWithContext, Outlet } from '@tanstack/react-router'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Toaster } from '@/components/ui/toaster'
 import { NavigationProgress } from '@/components/navigation-progress'

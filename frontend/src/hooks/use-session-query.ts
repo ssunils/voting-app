@@ -6,6 +6,7 @@ type SessionResponse = {
   user_id: number
   name: string
   role: string
+  member_id: string
 }
 export const useSessionQuery = () => {
   const {data, isFetching} =  useQuery<SessionResponse>({

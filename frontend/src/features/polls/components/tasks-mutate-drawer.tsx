@@ -22,6 +22,8 @@ import {
 } from '@/components/ui/sheet'
 import { Task } from '../data/schema'
 import { Textarea } from '@/components/ui/textarea'
+import { useCreatePoll, useUpdatePoll } from '@/hooks/polls/use-manage-poll'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface Props {
   open: boolean
@@ -31,36 +33,59 @@ interface Props {
 
 const formSchema = z.object({
   title: z.string().min(1, 'Title is required.'),
-  status: z.string().min(1, 'Please select a status.'),
-  label: z.string().min(1, 'Please select a label.'),
-  priority: z.string().min(1, 'Please choose a priority.'),
+  description: z.string(),
 })
 type TasksForm = z.infer<typeof formSchema>
 
 export function TasksMutateDrawer({ open, onOpenChange, currentRow }: Props) {
+  
+  const queryClient = useQueryClient()
   const isUpdate = !!currentRow
+  const { mutate: createPoll } = useCreatePoll()
+  const { mutate: updatePoll } = useUpdatePoll()
 
   const form = useForm<TasksForm>({
     resolver: zodResolver(formSchema),
-    defaultValues: currentRow ?? {
-      title: '',
-      status: '',
-      label: '',
-      priority: '',
-    },
+    defaultValues: currentRow,
   })
 
   const onSubmit = (data: TasksForm) => {
-    // do something with the form data
-    onOpenChange(false)
-    form.reset()
-    toast({
-      title: 'You submitted the following values:',
-      description: (
-        <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-          <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
+    if(isUpdate) {
+      updatePoll({ ...data, id: currentRow?.id }, {
+        onSuccess: () => {
+          toast({
+            title: 'Poll updated successfully',
+          })
+          onOpenChange(false)
+          form.reset()
+          queryClient.invalidateQueries({ queryKey: ['pollsList'] })
+        },
+        onError: () => {
+          toast({
+            title: 'Something went wrong',
+            description: 'Could not update the poll. Try again later.',
+            variant: 'destructive',
+          })
+        },
+      })
+      return
+    }
+    createPoll(data, {
+      onSuccess: () => {
+        toast({
+          title: 'Poll created successfully',
+        })
+        onOpenChange(false)
+        form.reset()
+        queryClient.invalidateQueries({ queryKey: ['pollsList'] })
+      },
+      onError: () => {
+        toast({
+          title: 'Something went wrong',
+          description: 'Could not create the poll. Try again later.',
+          variant: 'destructive',
+        })
+      },
     })
   }
 
@@ -93,9 +118,9 @@ export function TasksMutateDrawer({ open, onOpenChange, currentRow }: Props) {
               name='title'
               render={({ field }) => (
                 <FormItem className='space-y-1'>
-                  <FormLabel>Subject (English)</FormLabel>
+                  <FormLabel>Title</FormLabel>
                   <FormControl>
-                    <Textarea {...field} placeholder='Enter subject in English' rows={10} />
+                    <Textarea {...field} placeholder='Enter subject in English' rows={2} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -104,12 +129,12 @@ export function TasksMutateDrawer({ open, onOpenChange, currentRow }: Props) {
 
             <FormField
               control={form.control}
-              name='title'
+              name='description'
               render={({ field }) => (
                 <FormItem className='space-y-1'>
-                  <FormLabel>Subject (Tamil)</FormLabel>
+                  <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea {...field} placeholder='தமிழில் தலைப்பை உள்ளிடவும்' rows={10} />
+                    <Textarea {...field} placeholder='Add description here' rows={10} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

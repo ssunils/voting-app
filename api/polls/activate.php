@@ -1,5 +1,6 @@
 <?php
 header("Content-Type: application/json; charset=UTF-8");
+require_once '../cors.php'; // CORS headers
 
 // Ensure the request is POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

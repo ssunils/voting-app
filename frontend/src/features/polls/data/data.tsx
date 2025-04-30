@@ -3,32 +3,20 @@ import {
   IconArrowRight,
   IconArrowUp,
   IconCircle,
-  IconCircleCheck,
-  IconCircleX,
   IconStopwatch,
 } from '@tabler/icons-react'
 
 export const statuses = [
   {
-    value: 'pending',
-    label: 'Pending',
+    value: 0,
+    label: 'Inactive',
     icon: IconCircle,
   },
   {
-    value: 'in progress',
-    label: 'In Progress',
+    value: 1,
+    label: 'Active',
     icon: IconStopwatch,
-  },
-  {
-    value: 'done',
-    label: 'Done',
-    icon: IconCircleCheck,
-  },
-  {
-    value: 'canceled',
-    label: 'Canceled',
-    icon: IconCircleX,
-  },
+  }
 ]
 
 export const priorities = [
