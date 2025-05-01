@@ -5,7 +5,7 @@ import { useAuthStore } from '@/stores/authStore'
 import axios from 'axios'
 
 export const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
+  baseURL: import.meta.env.PROD ? '/api' : import.meta.env.VITE_API_BASE_URL,
   withCredentials: true, // important if using session cookies
 })
 

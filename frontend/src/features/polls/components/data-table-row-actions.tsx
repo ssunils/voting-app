@@ -79,7 +79,7 @@ export function DataTableRowActions<TData>({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align='end' className='w-[160px]'>
-        {task.active === 1 && (
+        {task.active === '1' && (
           <>
             <DropdownMenuItem
               className='cursor-pointer'
@@ -92,7 +92,7 @@ export function DataTableRowActions<TData>({
         )
 
         }
-        {task.active === 0 &&
+        {task.active === '0' &&
           <DropdownMenuItem
             className='cursor-pointer'
             onClick={enablePoll}

@@ -40,9 +40,9 @@ export const columns: ColumnDef<Task>[] = [
     ),
     cell: ({ row }) => {
       const status = statuses.find(
-        (status) => status.value === row.getValue('active')
+        (status) => status.value.toString() === row.getValue('active')?.toString()
       )
-
+      console.log('status', status)
       if (!status) {
         return null
       }
@@ -50,7 +50,7 @@ export const columns: ColumnDef<Task>[] = [
       return (
         <div className='flex w-[100px] items-center'>
           <span className='flex items-center gap-2'>
-            <Badge variant={status.value === 1 ? 'default' : 'secondary'}>
+            <Badge variant={status.value === '1' ? 'default' : 'secondary'}>
               <status.icon size={12} className='mr-2' /> {status.label}
             </Badge>
           </span>
@@ -98,7 +98,7 @@ export const columns: ColumnDef<Task>[] = [
         <div className='flex items-center'>
           <span>Yes: {row.original.yes_votes} 
             <span className='fill-grey-900'> |</span>
-             No: {row.original.yes_votes}</span>
+             No: {row.original.no_votes}</span>
         </div>
       )
     },

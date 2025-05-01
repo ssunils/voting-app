@@ -8,12 +8,12 @@ import {
 
 export const statuses = [
   {
-    value: 0,
+    value: '0',
     label: 'Inactive',
     icon: IconCircle,
   },
   {
-    value: 1,
+    value: '1',
     label: 'Active',
     icon: IconStopwatch,
   }
