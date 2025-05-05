@@ -2,9 +2,33 @@ import { toast } from '@/hooks/use-toast'
 import { ConfirmDialog } from '@/components/confirm-dialog'
 import { useTasks } from '../context/tasks-context'
 import { TasksMutateDrawer } from './tasks-mutate-drawer'
+import { useDeletePoll } from '@/hooks/polls/use-manage-poll'
+import { useQueryClient } from '@tanstack/react-query'
 
 export function TasksDialogs() {
   const { open, setOpen, currentRow, setCurrentRow } = useTasks()
+  const { mutate: deletePoll } = useDeletePoll()
+  const queryClient = useQueryClient()
+
+  const deleteAction = () => {
+    deletePoll({ id: currentRow?.id }, {
+      onSuccess: () => {
+        toast({
+          title: 'Poll updated successfully',
+        })
+        setOpen(null)
+        setCurrentRow(null)
+        queryClient.invalidateQueries({ queryKey: ['pollsList'] })
+      },
+      onError: () => {
+        toast({
+          title: 'Something went wrong',
+          description: 'Could not update the poll. Try again later.',
+          variant: 'destructive',
+        })
+      },
+    })
+  }
   return (
     <>
       <TasksMutateDrawer
@@ -16,7 +40,7 @@ export function TasksDialogs() {
       {currentRow && (
         <>
           <TasksMutateDrawer
-            key={`task-update-${currentRow.id}`}
+            key={`task-update`}
             open={open === 'update'}
             onOpenChange={() => {
               setOpen('update')
@@ -37,28 +61,12 @@ export function TasksDialogs() {
                 setCurrentRow(null)
               }, 500)
             }}
-            handleConfirm={() => {
-              setOpen(null)
-              setTimeout(() => {
-                setCurrentRow(null)
-              }, 500)
-              toast({
-                title: 'The following task has been deleted:',
-                description: (
-                  <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-                    <code className='text-white'>
-                      {JSON.stringify(currentRow, null, 2)}
-                    </code>
-                  </pre>
-                ),
-              })
-            }}
+            handleConfirm={deleteAction}
             className='max-w-md'
-            title={`Delete this task: ${currentRow.id} ?`}
+            title={`Delete this poll ?`}
             desc={
               <>
-                You are about to delete a task with the ID{' '}
-                <strong>{currentRow.id}</strong>. <br />
+                You are about to delete <strong>{currentRow.title}</strong><br/>
                 This action cannot be undone.
               </>
             }

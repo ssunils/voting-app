@@ -8,6 +8,7 @@ if (isset($_SESSION['user_id']) && isset($_SESSION['role'])) {
         'authenticated' => true,
         'user_id' => $_SESSION['user_id'],
         'name' => $_SESSION['name'] ?? '',
+        'member_id' => $_SESSION['member_id'] ?? '',
         'role' => $_SESSION['role']
     ]);
 } else {

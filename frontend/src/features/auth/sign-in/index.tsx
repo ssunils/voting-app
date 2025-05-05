@@ -1,27 +1,9 @@
 import { Card } from '@/components/ui/card'
 import AuthLayout from '../auth-layout'
 import { UserAuthForm } from './components/user-auth-form'
-import { useEffect } from 'react'
-import { router } from '@/main'
-import { useSessionQuery } from '@/hooks/use-session-query'
 
 export default function SignIn() {
 
-  const { isFetching, isAuthenticated } = useSessionQuery()
-  useEffect(() => {
-    if (isAuthenticated) {
-      router.navigate({
-        to: '/polls',
-      })
-    }
-  }, [isAuthenticated])
-  if (isFetching) {
-    return (<>Authenticating</>)
-  }
-
-  if (isAuthenticated) {
-    return (<>Authenticated</>)
-  }
   return (
     <AuthLayout>
       <Card className='p-6'>

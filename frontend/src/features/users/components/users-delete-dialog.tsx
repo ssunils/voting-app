@@ -1,13 +1,13 @@
 'use client'
 
-import { useState } from 'react'
 import { IconAlertTriangle } from '@tabler/icons-react'
+import { useQueryClient } from '@tanstack/react-query'
 import { toast } from '@/hooks/use-toast'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { ConfirmDialog } from '@/components/confirm-dialog'
 import { User } from '../data/schema'
+import { useDeleteMember } from '@/hooks/members/use-delete-member'
+import { useEffect } from 'react'
 
 interface Props {
   open: boolean
@@ -16,30 +16,37 @@ interface Props {
 }
 
 export function UsersDeleteDialog({ open, onOpenChange, currentRow }: Props) {
-  const [value, setValue] = useState('')
+  const { mutate: deleteMember, isSuccess: deleteSuccess } = useDeleteMember()
+  const queryClient = useQueryClient()
 
-  const handleDelete = () => {
-    if (value.trim() !== currentRow.username) return
+  const handleDelete = async () => {
 
-    onOpenChange(false)
-    toast({
-      title: 'The following user has been deleted:',
-      description: (
-        <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-          <code className='text-white'>
-            {JSON.stringify(currentRow, null, 2)}
-          </code>
-        </pre>
-      ),
-    })
+    deleteMember(currentRow.id)
+
   }
+
+  useEffect(() => {
+    if (deleteSuccess) {
+      onOpenChange(false)
+      toast({
+        title: 'User deleted',
+        description: (
+          <p>
+            User <span className='font-bold'>{currentRow.name}</span> has been
+            deleted.
+          </p>
+        ),
+      })
+      queryClient.invalidateQueries({ queryKey: ['userList'] })
+
+    }
+  }, [deleteSuccess, currentRow.name])
 
   return (
     <ConfirmDialog
       open={open}
       onOpenChange={onOpenChange}
       handleConfirm={handleDelete}
-      disabled={value.trim() !== currentRow.username}
       title={
         <span className='text-destructive'>
           <IconAlertTriangle
@@ -55,21 +62,12 @@ export function UsersDeleteDialog({ open, onOpenChange, currentRow }: Props) {
             Are you sure you want to delete{' '}
             <span className='font-bold'>{currentRow.username}</span>?
             <br />
-            This action will permanently remove the user with the role of{' '}
+            This action will permanently remove the user {' '}
             <span className='font-bold'>
-              {currentRow.role.toUpperCase()}
+              {currentRow.name.toUpperCase()}
             </span>{' '}
             from the system. This cannot be undone.
           </p>
-
-          <Label className='my-2'>
-            Username:
-            <Input
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-              placeholder='Enter username to confirm deletion.'
-            />
-          </Label>
 
           <Alert variant='destructive'>
             <AlertTitle>Warning!</AlertTitle>

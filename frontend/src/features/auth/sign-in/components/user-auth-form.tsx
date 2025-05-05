@@ -1,4 +1,4 @@
-import { HTMLAttributes, useEffect, useState } from 'react'
+import { HTMLAttributes, useState } from 'react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -15,9 +15,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/password-input'
 import { useLogin } from '@/hooks/use-login'
-import { useSessionQuery } from '@/hooks/use-session-query'
-import { redirect } from '@tanstack/react-router'
-import { router } from '@/main'
+import { toast } from '@/hooks/use-toast'
 
 type UserAuthFormProps = HTMLAttributes<HTMLDivElement>
 
@@ -55,10 +53,17 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     loginMutation.mutate(data, {
       onSuccess: () => {
         setIsLoading(false)
+        // window.location.reload()
         // Redirect or show toast here
       },
       onError: () => {
         setIsLoading(false)
+
+        toast({
+          title: 'Login Error',
+          description: 'You entered an invalid username or password',
+          variant: 'destructive'
+        })
         // Handle error here
       },
     })

@@ -11,8 +11,6 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import {
   Sheet,
   SheetClose,
@@ -22,9 +20,10 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet'
-import { SelectDropdown } from '@/components/select-dropdown'
 import { Task } from '../data/schema'
 import { Textarea } from '@/components/ui/textarea'
+import { useCreatePoll, useUpdatePoll } from '@/hooks/polls/use-manage-poll'
+import { useQueryClient } from '@tanstack/react-query'
 
 interface Props {
   open: boolean
@@ -34,36 +33,59 @@ interface Props {
 
 const formSchema = z.object({
   title: z.string().min(1, 'Title is required.'),
-  status: z.string().min(1, 'Please select a status.'),
-  label: z.string().min(1, 'Please select a label.'),
-  priority: z.string().min(1, 'Please choose a priority.'),
+  description: z.string(),
 })
 type TasksForm = z.infer<typeof formSchema>
 
 export function TasksMutateDrawer({ open, onOpenChange, currentRow }: Props) {
+  
+  const queryClient = useQueryClient()
   const isUpdate = !!currentRow
+  const { mutate: createPoll } = useCreatePoll()
+  const { mutate: updatePoll } = useUpdatePoll()
 
   const form = useForm<TasksForm>({
     resolver: zodResolver(formSchema),
-    defaultValues: currentRow ?? {
-      title: '',
-      status: '',
-      label: '',
-      priority: '',
-    },
+    defaultValues: currentRow,
   })
 
   const onSubmit = (data: TasksForm) => {
-    // do something with the form data
-    onOpenChange(false)
-    form.reset()
-    toast({
-      title: 'You submitted the following values:',
-      description: (
-        <pre className='mt-2 w-[340px] rounded-md bg-slate-950 p-4'>
-          <code className='text-white'>{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
+    if(isUpdate) {
+      updatePoll({ ...data, id: currentRow?.id }, {
+        onSuccess: () => {
+          toast({
+            title: 'Poll updated successfully',
+          })
+          onOpenChange(false)
+          form.reset()
+          queryClient.invalidateQueries({ queryKey: ['pollsList'] })
+        },
+        onError: () => {
+          toast({
+            title: 'Something went wrong',
+            description: 'Could not update the poll. Try again later.',
+            variant: 'destructive',
+          })
+        },
+      })
+      return
+    }
+    createPoll(data, {
+      onSuccess: () => {
+        toast({
+          title: 'Poll created successfully',
+        })
+        onOpenChange(false)
+        form.reset()
+        queryClient.invalidateQueries({ queryKey: ['pollsList'] })
+      },
+      onError: () => {
+        toast({
+          title: 'Something went wrong',
+          description: 'Could not create the poll. Try again later.',
+          variant: 'destructive',
+        })
+      },
     })
   }
 
@@ -98,43 +120,21 @@ export function TasksMutateDrawer({ open, onOpenChange, currentRow }: Props) {
                 <FormItem className='space-y-1'>
                   <FormLabel>Title</FormLabel>
                   <FormControl>
-                    <Textarea {...field} placeholder='Enter a title' />
+                    <Textarea {...field} placeholder='Enter subject in English' rows={2} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
-              name='priority'
+              name='description'
               render={({ field }) => (
-                <FormItem className='relative space-y-3'>
-                  <FormLabel>Priority</FormLabel>
+                <FormItem className='space-y-1'>
+                  <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <RadioGroup
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                      className='flex flex-col space-y-1'
-                    >
-                      <FormItem className='flex items-center space-x-3 space-y-0'>
-                        <FormControl>
-                          <RadioGroupItem value='high' />
-                        </FormControl>
-                        <FormLabel className='font-normal'>High</FormLabel>
-                      </FormItem>
-                      <FormItem className='flex items-center space-x-3 space-y-0'>
-                        <FormControl>
-                          <RadioGroupItem value='medium' />
-                        </FormControl>
-                        <FormLabel className='font-normal'>Medium</FormLabel>
-                      </FormItem>
-                      <FormItem className='flex items-center space-x-3 space-y-0'>
-                        <FormControl>
-                          <RadioGroupItem value='low' />
-                        </FormControl>
-                        <FormLabel className='font-normal'>Low</FormLabel>
-                      </FormItem>
-                    </RadioGroup>
+                    <Textarea {...field} placeholder='Add description here' rows={10} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
