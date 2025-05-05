@@ -9,8 +9,12 @@ import { NavGroup } from '@/components/layout/nav-group'
 import { sidebarData } from './data/sidebar-data'
 import { Button } from '../ui/button'
 import { LogOut } from 'lucide-react'
+import { useLogout } from '@/hooks/use-logout'
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+
+  const { mutate: logout } = useLogout()
+
   return (
     <Sidebar collapsible='icon' variant='floating' {...props}>
       <SidebarHeader className='px-4'>
@@ -23,7 +27,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarContent>
       <SidebarFooter>
 
-        <Button variant={'secondary'}>Logout <LogOut /></Button>
+        <Button variant={'secondary'} onClick={() => logout()}>Logout <LogOut /></Button>
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

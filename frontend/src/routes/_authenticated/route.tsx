@@ -6,8 +6,6 @@ import { SidebarProvider } from '@/components/ui/sidebar'
 import { AppSidebar } from '@/components/layout/app-sidebar'
 import { useSessionQuery } from '@/hooks/use-session-query'
 import SignIn from '@/features/auth/sign-in'
-import { useEffect } from 'react'
-import { router } from '@/main'
 
 export const Route = createFileRoute('/_authenticated')({
   component: RouteComponent,
@@ -16,23 +14,7 @@ export const Route = createFileRoute('/_authenticated')({
 function RouteComponent() {
   const defaultOpen = Cookies.get('sidebar:state') !== 'false'
 
-  const { data, isFetching, isAuthenticated } = useSessionQuery()
-  useEffect(() => {
-    console.log(data)
-    if (isAuthenticated) {
-      if (data?.role === 'admin') {
-        router.navigate({
-          to: '/',
-        })
-      }
-      if (data?.role === 'member') {
-        router.navigate({
-          to: '/vote',
-        })
-      }
-
-    }
-  }, [isAuthenticated])
+  const { isFetching, isAuthenticated } = useSessionQuery()
   if (isFetching) {
     return (<>Authenticating</>)
   }

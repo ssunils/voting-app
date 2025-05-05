@@ -15,6 +15,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/password-input'
 import { useLogin } from '@/hooks/use-login'
+import { toast } from '@/hooks/use-toast'
 
 type UserAuthFormProps = HTMLAttributes<HTMLDivElement>
 
@@ -52,11 +53,17 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     loginMutation.mutate(data, {
       onSuccess: () => {
         setIsLoading(false)
-        window.location.reload()
+        // window.location.reload()
         // Redirect or show toast here
       },
       onError: () => {
         setIsLoading(false)
+
+        toast({
+          title: 'Login Error',
+          description: 'You entered an invalid username or password',
+          variant: 'destructive'
+        })
         // Handle error here
       },
     })

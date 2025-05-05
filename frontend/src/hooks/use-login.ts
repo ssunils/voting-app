@@ -19,7 +19,12 @@ export const useLogin = () => {
                     role: data.role,
                     username: data.username,
                 });
-                router.navigate({ to: '/polls' });
+                if (data.role === 'admin') {
+                    router.navigate({ to: '/' });
+                }
+                if (data.role === 'member') {
+                    router.navigate({ to: '/vote' });
+                }
             }
         },
     })

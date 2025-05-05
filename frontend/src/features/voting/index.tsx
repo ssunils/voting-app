@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { useSessionQuery } from "@/hooks/use-session-query";
 import { useLatestPoll } from "@/hooks/voting/use-get-latest-poll";
 import { useCastVote } from "@/hooks/voting/use-cast-vote";
+import { useLogout } from "@/hooks/use-logout";
 
 const options = [
     { value: "yes", label: "Yes" },
@@ -16,8 +17,9 @@ export default function Voting() {
     const [selected, setSelected] = useState<any>();
     const [voted, setVoted] = useState(true);
     const { data: userData } = useSessionQuery();
-    const { data: latestPoll } = useLatestPoll();
+    const { data: latestPoll, } = useLatestPoll();
     const { mutate } = useCastVote();
+    const { mutate: logout } = useLogout()
 
     useEffect(() => {
         setSelected(undefined);
@@ -54,6 +56,9 @@ export default function Voting() {
             <div className="mb-20">
                 <h1 className="text-xl font-bold mb-0">Welcome, {userData?.name}</h1>
                 <p>Member No: {userData?.member_id}</p>
+                <Button variant="link" onClick={() => logout()} className="text-sm px-0">
+                    Logout
+                </Button>
             </div>
             <div className="h-full flex items-center">
                 <Card className="min-w-[300px] w-full mx-auto">
@@ -63,7 +68,7 @@ export default function Voting() {
                         {voted ? (
                             <div className="space-y-4">
                                 <p className="text-center text-sm text-muted-foreground">
-                                    Thanks for voting! Please wait for the results to be announced.
+                                    Please wait for the next poll to vote.
                                 </p>
                             </div>
                         ) : (

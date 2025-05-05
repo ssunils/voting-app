@@ -15,8 +15,10 @@ $table = ($role === 'admin') ? 'admin' : 'members';
 
 try {
     // Set is_online = 0
-    $updateOnline = $pdo->prepare("UPDATE $table SET is_online = 0 WHERE id = :id");
-    $updateOnline->execute([':id' => $userId]);
+    if($role === 'user') {
+        $updateOnline = $pdo->prepare("UPDATE $table SET is_online = 0 WHERE id = :id");
+        $updateOnline->execute([':id' => $userId]);
+    }
 
     // Destroy session
     session_unset();
